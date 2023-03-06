@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block stylesheet %}
+<link rel="stylesheet" href="{% static 'blog/css/login.css' %}">
+{% endblock stylesheet %}
+{% block body %}
+<nav class="navbar navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">Pen & Pixels</a>
+
+      <div class="form-check form-switch ms-auto mt-3 me-3">
+        <input class="form-check-input" type="checkbox" id="lightSwitch" />
+          <label class="form-check-label ms-3" for="lightSwitch">
+            <svg xmlns="http://www.w3.org/2000/svg"
+              width="25"
+              height="25"
+              fill="currentColor"
+              class="bi bi-brightness-high"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"
+              />
+            </svg>
+          </label>
+        </div>
+    </div>
+  </nav>
+    <div id="main-wrapper" class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-10">
+                <div class="card border-0 bg-light">
+                    <div class="card-body p-0">
+                        <div class="row no-gutters">
+                            <div class="col-lg-6">
+                                <div class="p-5">
+                                    <div class="mb-5">
+                                        <h3 class="h4 font-weight-bold text-theme display-4">Login</h3>
+
+                                    </div>
+    
+                                    <h6 class="h5 mb-0">Welcome back!</h6>
+                                    <p class="text-muted mt-2 mb-5">Enter your email address and password to join Pen & Pixels.</p>
+                                    {% if message %}
+                                    <p class="" style="color: red;">Incorrect username or password!</p>
+                                    {% endif %}
+                                    <form method="post">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">User Name</label>
+                                            <input type="text" name="username" class="form-control" id="exampleInputEmail1" required>
+                                        </div>
+                                        <div class="form-group mb-5">
+                                            <label for="exampleInputPassword1">Password</label>
+                                            <input type="password" name="password" class="form-control" id="exampleInputPassword1" required>
+                                        </div>
+                                        <button type="submit" class="btn btn-dark">Login</button>
+                                        <a href="" class="forgot-link float-right text-primary">Forgot password?</a>
+                                    </form>
+                                </div>
+                            </div>
+    
+                            <div class="col-lg-6 d-none d-lg-inline-block">
+                                <div class="account-block rounded-right">
+                                    <div class="overlay rounded-right"></div>
+                                    <div class="account-testimonial">
+                                        <h4 class="text-white mb-4">Pen & Pixels</h4>
+                                        <p class="lead text-white">"Connecting people through creativity"</p>
+                                        <p>- Rimmel Asghar</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+    
+                    </div>
+                    <!-- end card-body -->
+                </div>
+                <!-- end card -->
+    
+                <p class="text-muted text-center mt-3 mb-0">Don't have an account? <a href="/register" class="text-primary ml-1">register</a></p>
+    
+                <!-- end row -->
+    
+            </div>
+            <!-- end col -->
+        </div>
+        <!-- Row -->
+    </div>
+    {% block scripts %}
+    <script src="{% static 'blog/js/light.js' %}"></script>
+    {% endblock scripts %}
+{% endblock body%}

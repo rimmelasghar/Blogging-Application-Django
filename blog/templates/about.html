@@ -1,0 +1,54 @@
+{% extends 'base.html' %} 
+{% load static %}
+{% block content %}
+{% block stylesheet %}
+<link rel="stylesheet" href="{% static 'blog/css/card.css' %}">
+<link rel="stylesheet" href="{% static 'blog/css/about.css' %}">
+{% endblock stylesheet %}
+<div class="container mt-5">
+    <div class="row d-flex justify-content-center">
+        
+        <div class="col-md-7">
+            
+            <div class="card p-3 py-4 bg-light">
+                
+                <div class="text-center">
+                    <img src="https://media.licdn.com/dms/image/C4E03AQFoO-34p4uCGQ/profile-displayphoto-shrink_800_800/0/1659822509525?e=2147483647&v=beta&t=7PCd1owhNl0djAt1tgUsNk3bq7-bT4uwydFjrRrH4rM" width="100" class="rounded-circle">
+                </div>
+                
+                <div class="text-center mt-3">
+                    <h5 class="mt-2 mb-0">Rimmel Asghar</h5>
+                    <span>Software Engineering Student @UIT</span>
+                    
+                    <div class="px-4 mt-1">
+                        <p class="fonts">Meet Rimmel Asghar, An enthusiastic and driven Software Engineering student at @UIT, based in Karachi. With a passion for software development and a thirst for knowledge, Rimmel is always looking to learn and grow in the field of Software Engineering. With a keen interest in Big Data technologies, Rimmel is poised to make a big impact in the industry.</p>
+                    
+                    </div>
+                    
+                     <ul class="social-list">
+                        <li><a href="https://github.com/rimmelasghar" target="_blank"><i class="fa fa-github"></i></a></li>
+                        <li><a href="https://www.behance.net/rimmelasghar" target="_blank"><i class="fa fa-behance"></i></a></li>
+                        <li><a href="https://medium.com/@rimmelasghar3" target="_blank"><i class="fa fa-medium"></i></a></li>
+                        <li><a href="https://www.linkedin.com/in/rimmelasghar/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+                    </ul>
+                    
+                    <div class="buttons">
+                        
+                        <button class="btn btn-outline-primary px-4">Message</button>
+                        <button class="btn btn-primary px-4 ms-3">Contact</button>
+                    </div>
+                    
+                    
+                </div>
+                
+               
+                
+                
+            </div>
+            
+        </div>
+        
+    </div>
+    
+</div>
+{% endblock content %}
