@@ -1,0 +1,10 @@
+body {
+    background-image: url(../img/bg.jpg);
+    }
+.logo a {
+    color: white;
+}
+.logo a:hover,
+.logo a:active {
+    text-decoration: none;
+}
