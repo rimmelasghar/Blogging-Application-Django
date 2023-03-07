@@ -12,10 +12,11 @@
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
       crossorigin="anonymous"
     />
-
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'blog/css/style.css' %}">
     <link rel="stylesheet" href="{% static 'blog/css/light.css' %}">
+    <link rel="stylesheet" href="{% static 'blog/css/float.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     {% block stylesheet %}{% endblock stylesheet %}
   </head>
@@ -68,11 +69,53 @@
       </div>
     </section>
 
+
+    
+<div class="floating-container">
+  <div class="floating-button">+</div>
+  <div class="element-container">
+    {% if user.is_authenticated %}
+    <a href="/"> <span class="float-element tooltip-left">
+      <i class="material-icons">create
+      </i></a>
+    </span>
+    <a href="logout"><span class="float-element">
+      <i class="material-icons">logout
+</i></a>
+    </span>
+    <a href="/"><span class="float-element">
+      <i class="material-icons">home
+</i></a>
+    </span>
+    {% else %}
+    <a href="login"><span class="float-element">
+      <i class="material-icons">login</i>
+    </span></a>
+    <a href=""><span class="float-element">
+      <i class="material-icons">login</i>
+    </span></a>
+    <a href=""><span class="float-element">
+      <i class="material-icons">login</i>
+    </span></a>
+    {% endif %}
+  </div>
+</div>
+
+
 		<footer class="footer-07 ">
 			<div class="container">
 				<div class="row justify-content-center">
 					<div class="col-md-12 text-center">
-						<h2 class="footer-heading "><a href="#" class="logo">Pen & Pixels</a></h2>
+						<h2 class="footer-heading "><a href="" class="logo">Pen & Pixels</a></h2>
+            <p class="copyright">
+            Follow me here  <i class="fa fa-heart mr-2"></i>
+            </p>
+            <div class="d-flex justify-content-center">
+              <a href="https://github.com/rimmelasghar" target="_blank"><i class="fa fa-github mr-2"></i></a>
+              <a href="https://www.behance.net/rimmelasghar" target="_blank"><i class="fa fa-behance mr-2"></i></a>
+              <a href="https://medium.com/@rimmelasghar3" target="_blank"><i class="fa fa-medium mr-2"></i></a>
+              <a href="https://www.linkedin.com/in/rimmelasghar/" target="_blank"><i class="fa fa-linkedin mr-2"></i></a>
+            </div>
 					</div>
 				</div>
 				<div class="row mt-5">

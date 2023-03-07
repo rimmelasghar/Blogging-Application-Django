@@ -14,7 +14,12 @@
                     <!-- Post title-->
                     <h1 class="fw-bolder mb-1">{{ blog.title }}</h1>
                     <!-- Post meta content-->
-                    <div class="text-muted fst-italic mb-2">Posted on {{ blog.date_posted }} by {{ blog.author.username }}</div>
+                    <div class="text-muted fst-italic mb-2"><img
+                        class="mr-3 rounded-circle"
+                        src="https://media.licdn.com/dms/image/C4E03AQFoO-34p4uCGQ/profile-displayphoto-shrink_800_800/0/1659822509525?e=2147483647&v=beta&t=7PCd1owhNl0djAt1tgUsNk3bq7-bT4uwydFjrRrH4rM"
+                        alt="Generic placeholder image"
+                        style="max-width: 50px"
+                      />Posted on {{ blog.date_posted }} by {{ blog.author.username }}</div>
                     <!-- Post categories-->
                     <a class="badge bg-secondary text-decoration-none link-light" href="#!">Web Design</a>
                     <a class="badge bg-secondary text-decoration-none link-light" href="#!">Freebies</a>
@@ -35,41 +40,29 @@
             <section class="mb-5">
                 <div class="card bg-light">
                     <div class="card-body">
+                        <h3 class="fw mb-5">{{ no }} Comments</h3>
                         <!-- Comment form-->
-                        <form class="mb-4"><textarea class="form-control" rows="3" placeholder="Join the discussion and leave a comment!"></textarea></form>
-                        <!-- Comment with nested comments-->
-                        <div class="d-flex mb-4">
-                            <!-- Parent comment-->
-                            <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                            <div class="ms-3">
-                                <div class="fw-bold">Commenter Name</div>
-                                If you're going to lead a space frontier, it has to be government; it'll never be private enterprise. Because the space frontier is dangerous, and it's expensive, and it has unquantified risks.
-                                <!-- Child comment 1-->
-                                <div class="d-flex mt-4">
-                                    <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                                    <div class="ms-3">
-                                        <div class="fw-bold">Commenter Name</div>
-                                        And under those conditions, you cannot establish a capital-market evaluation of that enterprise. You can't get investors.
-                                    </div>
-                                </div>
-                                <!-- Child comment 2-->
-                                <div class="d-flex mt-4">
-                                    <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                                    <div class="ms-3">
-                                        <div class="fw-bold">Commenter Name</div>
-                                        When you put money directly to a problem, it makes a good headline.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <form class="mb-4" method="post" action="{% url 'post_comments' blog.id user.id %}" ><textarea class="form-control" name="comment" rows="3" placeholder="Join the discussion and leave a comment!"></textarea><br>
+                        {% csrf_token %}
+                        {% if user.is_authenticated %}
+                        <button class="btn btn-primary">Comment</button>
+                        {% else %}
+                        you have to login to post comments.
+                        {% endif %}
+                        </form>
                         <!-- Single comment-->
+                        {% for i in comments %}
                         <div class="d-flex">
                             <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
                             <div class="ms-3">
-                                <div class="fw-bold">Commenter Name</div>
-                                When I look at the universe and all the ways the universe wants to kill us, I find it hard to reconcile that with statements of beneficence.
+                                <div class="fw-bold">{{ i.author.username }}</div>
+                                {{ i.content }}
+
                             </div>
                         </div>
+                        <br>
+                        {% endfor %}
+                        
                     </div>
                 </div>
             </section>
@@ -78,7 +71,10 @@
         <div class="col-lg-4">
             <!-- Side widget-->
             <div class="card mb-4 bg-light">
-                <br>
+                <div class="text-center mt-3">
+                    <span><br><br></span>
+                </div>
+                
                     <div class="text-center">
                         <img src="https://media.licdn.com/dms/image/C4E03AQFoO-34p4uCGQ/profile-displayphoto-shrink_800_800/0/1659822509525?e=2147483647&v=beta&t=7PCd1owhNl0djAt1tgUsNk3bq7-bT4uwydFjrRrH4rM" width="100" class="rounded-circle">
                     </div>
@@ -103,6 +99,10 @@
 
             </div>
         </div>
+
+
+
+
     </div>
 </div>
 {% endblock %}

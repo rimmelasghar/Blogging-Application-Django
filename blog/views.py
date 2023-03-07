@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout
 from django.shortcuts import render, redirect
 from blog.forms import SignUpForm
+from django.contrib.auth.models import User
 
 def home(request):
     post = Post.objects.all()
@@ -45,13 +46,20 @@ def aboutdev(request):
 # Blogs:
 
 def getblog(request,id):
-    # blog = Post.objects.filter(id=id)
-    # author_blogs = Post.objects.filter(author=blog[0].author)
-
     blog = Post.objects.filter(id=id).first()
+    blog.increment()
+    blog.save()
     author_blogs = Post.objects.filter(author=blog.author)
-    return render(request,"blog_view.html",{"blog":blog})
+    comments = Comment.objects.filter(post=blog)
+    no = len(comments)
+    return render(request,"blog_view.html",{"blog":blog,"author_blogs":author_blogs,"comments":comments,"no":no})
 
-def post_comments(request,id):
-    blog = Post.objects.filter(id=id).first()
+def post_comments(request,id,user_id):
+    if request.method == "POST":
+        comment = request.POST.get('comment')
+        blog = Post.objects.filter(id=id).first()
+        user = User.objects.filter(id=user_id).first()
+        com = Comment(post = blog,author =user,content=comment )
+        com.save()
+        return redirect('getblog',id)
     

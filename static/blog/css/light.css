@@ -3,7 +3,7 @@
   }
 
   .custom-theme.bg-light {
-    background-color: darkslategray !important;
+    background-color: rgb(0, 0, 0) !important;
     border-radius: 3px;
     color: gainsboro;
     text-decoration: underline;
