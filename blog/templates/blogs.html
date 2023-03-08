@@ -15,12 +15,13 @@
   <div
     class="card text-white card-has-bg click-col"
     style="
-      background-image: url('https://source.unsplash.com/600x900/?tech,street');
+      background-image: url({{blog.image_link}});
+      background-size: 250%;
     "
   >
     <img
       class="card-img d-none"
-      src="https://source.unsplash.com/600x900/?tech,street"
+      src="{{blog.image_link}}"
       alt="Goverment Lorem Ipsum Sit Amet Consectetur dipisi?"
     />
     <div class="card-img-overlay d-flex flex-column">
@@ -46,7 +47,12 @@
             <small><i class="fa fa-heart" aria-hidden="true"></i>  {{ blog.likes }} likes</small><br>
             <small><i class="fa fa-eye" aria-hidden="true"></i>  {{ blog.views }} views</small>
           </div>
+          
         </div>
+        <form method="post" action="{% url 'like_post' blog.id %}">
+          {% csrf_token %}
+        <small style="float: right;"><button class="btn btn-primary" style="border:none; background-color:transparent;" type="submit"><i class="fa fa-heart" aria-hidden="true"></i></button></small>
+      </form>
       </div>
     </div>
   </div>

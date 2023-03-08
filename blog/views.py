@@ -1,10 +1,12 @@
 from django.shortcuts import render
-from .models import Post,Comment
+from .models import Post,Comment,Tags
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout
 from django.shortcuts import render, redirect
 from blog.forms import SignUpForm
 from django.contrib.auth.models import User
+from django.contrib import messages
+import markdown
 
 def home(request):
     post = Post.objects.all()
@@ -31,7 +33,12 @@ def register(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Your account has been created! You can now log in.')
             return redirect('login')
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field.capitalize()}: {error}")
     return render(request, 'register.html')
 
 def logout_view(request):
@@ -49,10 +56,18 @@ def getblog(request,id):
     blog = Post.objects.filter(id=id).first()
     blog.increment()
     blog.save()
+    # tags_obj = Tags.objects.filter(post=blog).first()
+    tags_obj = Tags.objects.filter(post=blog).first()
+    if tags_obj is None:
+        tags = []
+    else:
+        tags = [i for i in tags_obj.tags.split("#")][1:]
+    print(tags)
+    html_content = markdown.markdown(blog.content)
     author_blogs = Post.objects.filter(author=blog.author)
     comments = Comment.objects.filter(post=blog)
     no = len(comments)
-    return render(request,"blog_view.html",{"blog":blog,"author_blogs":author_blogs,"comments":comments,"no":no})
+    return render(request,"blog_view.html",{"tags":tags,"blog":blog,"blog_markdown":html_content,"author_blogs":author_blogs,"comments":comments,"no":no})
 
 def post_comments(request,id,user_id):
     if request.method == "POST":
@@ -62,4 +77,10 @@ def post_comments(request,id,user_id):
         com = Comment(post = blog,author =user,content=comment )
         com.save()
         return redirect('getblog',id)
-    
+
+def like_post(request,id):
+    if request.method == "POST":
+        blog = Post.objects.filter(id=id).first()
+        blog.increment_likes()
+        blog.save()
+        return redirect('home')

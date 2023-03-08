@@ -21,14 +21,18 @@
                         style="max-width: 50px"
                       />Posted on {{ blog.date_posted }} by {{ blog.author.username }}</div>
                     <!-- Post categories-->
-                    <a class="badge bg-secondary text-decoration-none link-light" href="#!">Web Design</a>
-                    <a class="badge bg-secondary text-decoration-none link-light" href="#!">Freebies</a>
+                    {% for i in tags %}
+                    <a class="badge bg-secondary text-decoration-none link-light" href="#!">{{ i }}</a>
+                    {% endfor %}
                 </header>
                 <!-- Preview image figure-->
-                <figure class="mb-4"><img class="img-fluid rounded" src="https://i.pinimg.com/736x/8c/bb/53/8cbb53c211ad41ec3128645ea11203ab.jpg" alt="..." /></figure>
+                
+                <figure class="mb-4"><img class="img-fluid rounded" src="{{blog.image_link}}" alt="blog header image" /></figure>
+                
                 <!-- Post content-->
                 <section class="mb-5">
-                    <p class="fs-5 mb-4">{{ blog.content }}</p>
+                    {{ blog_markdown|safe }}
+                    <!-- <p class="fs-5 mb-4">{{ blog.content }}</p> -->
                     <!-- <p class="fs-5 mb-4">The universe is large and old, and the ingredients for life as we know it are everywhere, so there's no reason to think that Earth would be unique in that regard. Whether of not the life became intelligent is a different question, and we'll see if we find that.</p>
                     <p class="fs-5 mb-4">If you get asteroids about a kilometer in size, those are large enough and carry enough energy into our system to disrupt transportation, communication, the food chains, and that can be a really bad day on Earth.</p>
                     <h2 class="fw-bolder mb-4 mt-5">I have odd cosmic thoughts every day</h2>
@@ -42,12 +46,14 @@
                     <div class="card-body">
                         <h3 class="fw mb-5">{{ no }} Comments</h3>
                         <!-- Comment form-->
+                        {% if user.is_authenticated %}
                         <form class="mb-4" method="post" action="{% url 'post_comments' blog.id user.id %}" ><textarea class="form-control" name="comment" rows="3" placeholder="Join the discussion and leave a comment!"></textarea><br>
                         {% csrf_token %}
-                        {% if user.is_authenticated %}
+                        
                         <button class="btn btn-primary">Comment</button>
                         {% else %}
-                        you have to login to post comments.
+                        you have to <a href="/login">login</a> or <a href="/register">Signup</a> to post comments.
+                        <br><br>
                         {% endif %}
                         </form>
                         <!-- Single comment-->
