@@ -16,7 +16,7 @@
     class="card text-white card-has-bg click-col"
     style="
       background-image: url({{blog.image_link}});
-      background-size: 250%;
+      background-size: 300%;
     "
   >
     <img
@@ -49,10 +49,12 @@
           </div>
           
         </div>
+        {% if user.is_authenticated %}
         <form method="post" action="{% url 'like_post' blog.id %}">
           {% csrf_token %}
         <small style="float: right;"><button class="btn btn-primary" style="border:none; background-color:transparent;" type="submit"><i class="fa fa-heart" aria-hidden="true"></i></button></small>
       </form>
+      {% endif %}
       </div>
     </div>
   </div>

@@ -7,6 +7,7 @@ from blog.forms import SignUpForm
 from django.contrib.auth.models import User
 from django.contrib import messages
 import markdown
+from django.contrib.auth.decorators import login_required
 
 def home(request):
     post = Post.objects.all()
@@ -84,3 +85,17 @@ def like_post(request,id):
         blog.increment_likes()
         blog.save()
         return redirect('home')
+
+@login_required
+def write_blog(request,user_id):
+    author = User.objects.filter(id=user_id).first()
+    if request.method == "POST":
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+        image_link = request.POST.get('image_link')
+        tags = request.POST.get('tags')
+        blog = Post(title= title,content=content,author=author,image_link = image_link )
+        blog.save()
+        tags = Tags(tags=tags,post=blog)
+        return redirect('getblog',blog.id)
+    return render(request,"writeblog.html")

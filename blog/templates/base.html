@@ -75,11 +75,11 @@
   <div class="floating-button">+</div>
   <div class="element-container">
     {% if user.is_authenticated %}
-    <a href="/"> <span class="float-element tooltip-left">
+    <a href="/writeblog/{{user.id}}"> <span class="float-element tooltip-left">
       <i class="material-icons">create
       </i></a>
     </span>
-    <a href="logout"><span class="float-element">
+    <a href="/logout"><span class="float-element">
       <i class="material-icons">logout
 </i></a>
     </span>
