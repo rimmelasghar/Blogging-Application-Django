@@ -2,6 +2,13 @@
 {% load static %}
 {% block stylesheet %}
 <link rel="stylesheet" href="{% static 'blog/css/blog_view.css' %}">
+<style>
+    .mb-5 img {
+        max-width: 100%;
+        height: auto; 
+        border-radius: 5px;  
+    }
+</style>
 {% endblock stylesheet %}
 {% block content %}
 <div class="container mt-5">

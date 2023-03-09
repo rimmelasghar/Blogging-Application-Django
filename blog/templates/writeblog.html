@@ -4,6 +4,13 @@
 <style>
     body{color: #000;overflow-x: hidden;height: 100%;background-image: url("https://i.imgur.com/GMmCQHC.png");background-repeat: no-repeat;background-size: 100% 100%}.card{padding: 30px 40px;margin-top: 60px;margin-bottom: 60px;border: none !important;box-shadow: 0 6px 12px 0 rgba(0,0,0,0.2)}.blue-text{color: #00BCD4}.form-control-label{margin-bottom: 0}input, textarea, button{padding: 8px 15px;border-radius: 5px !important;margin: 5px 0px;box-sizing: border-box;border: 1px solid #ccc;font-size: 18px !important;font-weight: 300}input:focus, textarea:focus{-moz-box-shadow: none !important;-webkit-box-shadow: none !important;box-shadow: none !important;border: 1px solid #00BCD4;outline-width: 0;font-weight: 400}.btn-block{text-transform: uppercase;font-size: 15px !important;font-weight: 400;height: 43px;cursor: pointer}.btn-block:hover{color: #fff !important}button:focus{-moz-box-shadow: none !important;-webkit-box-shadow: none !important;box-shadow: none !important;outline-width: 0}
 </style>
+<style>
+    .mb-5 img {
+        max-width: 100%;
+        height: auto; 
+        border-radius: 5px;  
+    }
+</style>
 {% endblock stylesheet %}
 {% block content %}
 <div class="container-fluid px-1 py-5 mx-auto">
@@ -16,21 +23,81 @@
                 <form method="post" action="{% url 'write_blog' user.id %}" class="form-card" >
                     {% csrf_token %}
                     <div class="row justify-content-between text-left">
-                        <div class="form-group col-sm-6 flex-column d-flex"> <label class="form-control-label px-3">Heading<span class="text-danger"> *</span></label> <input type="text" id="fname" name="title" placeholder="Enter your blog heading" onblur="validate(1)"> </div>
-                        <div class="form-group col-sm-6 flex-column d-flex"> <label class="form-control-label px-3">Tags<span class="text-danger"> *</span></label> <input type="text" id="lname" name="tags" placeholder="Enter Tags (for ex: #tech)" onblur="validate(2)"> </div>
+                        <div class="form-group col-sm-6 flex-column d-flex"> <label class="form-control-label px-3">Heading<span class="text-danger"> *</span></label> <input type="text" id="title" name="title" placeholder="Enter your blog heading" onblur="validate(1)"> </div>
+                        <div class="form-group col-sm-6 flex-column d-flex"> <label class="form-control-label px-3">Tags<span class="text-danger"> *</span></label> <input type="text" id="tags" name="tags" placeholder="Enter Tags (for ex: #tech)" onblur="validate(2)"> </div>
                     </div>
                     <div class="row justify-content-between text-left">
-                        <div class="form-group col-sm-6 flex-column d-flex"> <label class="form-control-label px-3">Image Link<span class="text-danger"> *</span></label> <input type="text" id="email" name="image_link" placeholder="Enter Image link" onblur="validate(3)"> </div>
+                        <div class="form-group col-sm-6 flex-column d-flex"> <label class="form-control-label px-3">Image Link<span class="text-danger"> *</span></label> <input type="text" id="image" name="image_link" placeholder="Enter Image link" onblur="validate(3)"> </div>
                     </div>
+                    <!-- <div class="row justify-content-between text-left">
+                        <div class="form-group col-12 flex-column d-flex"> <label class="form-control-label px-3">Blog Content<span class="text-danger"> *</span></label> <textarea type="text" id="inputTextArea" name="content" placeholder="add Content in Markdown Syntax" onblur="validate(6)"> </textarea></div>
+                    </div> -->
                     <div class="row justify-content-between text-left">
-                        <div class="form-group col-12 flex-column d-flex"> <label class="form-control-label px-3">Blog Content<span class="text-danger"> *</span></label> <textarea type="text" id="ans" name="content" placeholder="add Content in Markdown Syntax" onblur="validate(6)"> </textarea></div>
+                        <div class="form-group col-12 flex-column d-flex"> <label class="form-control-label px-3">Blog Content<span class="text-danger"> *</span><div class="form-group col-12 flex-column d-flex"> <div class="d-flex justify-content-center">
+                            <a type="button" onclick="get_heading_mark()"><i class="fa fa-header mr-2"></i> </a>
+                            <a type="button" onclick="get_image_mark()"><i class="fa fa-file-image-o mr-2"></i></a>
+                            <a type="button" onclick="get_lst_mark()"><i class="fa fa-list-ul mr-2"></i>  </a>
+                          </div></div></label> <textarea type="text" id="inputTextArea" name="content" placeholder="add Content in Markdown Syntax" onblur="validate(6)"> </textarea></div>
                     </div>
                     <div class="row justify-content-end">
                         <div class="form-group col-sm-6"> <button type="submit" class="btn-block btn-dark">Post</button> </div>
+                        <div class="form-group col-sm-6"> <button onclick="convertToMarkdown()" type="button" class="btn-block btn-dark">preview</button> </div>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+<div id="user" style="display:none;">{{ user.username }}</div>
+
+<div id="outputDiv"></div>
 {% endblock content %}
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script>
+    function get_image_mark(){
+        var textarea = document.getElementById("inputTextArea");
+        textarea.value += "![img](addyourimglinkhere)";
+    }
+    function get_heading_mark(){
+        var textarea = document.getElementById("inputTextArea");
+        textarea.value += "# This is a heading\n";
+    }
+    function get_lst_mark(){
+        var textarea = document.getElementById("inputTextArea");
+        textarea.value += "\n- option 1\n- option 2\n- option 3\n";
+    }
+    function get_tags(arr){
+        var txt = "";
+        for(var i of arr){
+            txt += `<a class="badge bg-secondary text-decoration-none link-light" href="#!">${i}</a>`
+        }
+        console.log(txt);
+        return txt
+    }
+    function convertToMarkdown() {
+        // Get the input text from the text area
+        const inputText = document.getElementById("inputTextArea").value;
+        console.log(inputText)
+        // Convert the input text to Markdown using the Marked library
+        const now = new Date();
+        const day = now.toLocaleDateString('en-US', {weekday: 'long'});
+        const time = now.toLocaleTimeString('en-US', {hour: 'numeric', minute: 'numeric', hour12: true});
+
+        const dateString = `${day} at ${time}`;
+        const markdownText = marked.parse(inputText);
+        const title = document.getElementById("title").value;
+        const date = dateString;
+        const user = document.getElementById("user").innerHTML;
+        const tags_str = document.getElementById("tags").value;
+        const arr = tags_str.split("#");
+        const tags = get_tags(arr);
+
+        const image = document.getElementById("image").value;
+        // Set the Markdown text as the output
+        document.getElementById("outputDiv").innerHTML = `<div class="container-fluid px-1 py-5 mx-auto"> <div class="row d-flex justify-content-center"> <div class="card bg-light"><h5 class="text-center mb-4">Blog preview</h5><div class="col"> <article> <header class="mb-4"> <!-- Post title--> <h1 class="fw-bolder mb-1">${title}</h1> <div class="text-muted fst-italic mb-2"><img class="mr-3 rounded-circle" src="https://media.licdn.com/dms/image/C4E03AQFoO-34p4uCGQ/profile-displayphoto-shrink_800_800/0/1659822509525?e=2147483647&v=beta&t=7PCd1owhNl0djAt1tgUsNk3bq7-bT4uwydFjrRrH4rM" alt="Generic placeholder image" style="max-width: 50px" />Posted on ${date} by ${user}</div> ${tags} </header> <!-- Preview image figure--> <figure class="mb-4"><img class="img-fluid rounded" src=${image} alt="blog header image" /></figure> <!-- Post content--> <section class="mb-5"> ${markdownText} </section> </article> </div>
+    </div> </div> </div>`;
+      }
+  </script>
+{% endblock scripts %}
