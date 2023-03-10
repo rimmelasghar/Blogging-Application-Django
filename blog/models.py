@@ -1,16 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-
-
-
-
 class Post(models.Model):
     title = models.CharField(max_length=255)
     content = models.TextField()
     date_posted = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     views = models.PositiveIntegerField(default=0)
+    post_likes = models.ManyToManyField(User, related_name='blogpost_like')
     likes = models.PositiveIntegerField(default=0)
     image_link = models.CharField(max_length=500,null=True,default=None)
 
@@ -20,6 +17,9 @@ class Post(models.Model):
         self.views += 1
     def increment_likes(self):
         self.likes += 1
+    def number_of_likes(self):
+        return self.post_likes.count()
+        
 
 
 

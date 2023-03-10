@@ -29,13 +29,13 @@
         <a class="nav-link" href="/aboutdev">About Dev</a>
         {% if user.is_authenticated %}
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item dropdown">
+          <li class="nav-item">
             <a class="nav-link dropdown-toggle" href="#" id="userMenu" data-toggle="dropdown" aria-haspopup="fasle" aria-expanded="false">
               {{ user.username }}
             </a>
-            <ul class="dropdown-menu" aria-labelledby="userMenu">
+            {% comment %} <ul class="dropdown-menu" aria-labelledby="userMenu">
               <a class="dropdown-item" href="logout">Log out</a>
-            </ul>
+            </ul> {% endcomment %}
           </li>
         </ul>
       {% else %}

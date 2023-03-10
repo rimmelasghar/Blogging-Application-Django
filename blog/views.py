@@ -7,6 +7,7 @@ from blog.forms import SignUpForm
 from django.contrib.auth.models import User
 from django.contrib import messages
 import markdown
+from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 
 def home(request):
@@ -79,10 +80,15 @@ def post_comments(request,id,user_id):
         com.save()
         return redirect('getblog',id)
 
-def like_post(request,id):
+def like_post(request,id,user_id):
     if request.method == "POST":
-        blog = Post.objects.filter(id=id).first()
-        blog.increment_likes()
+        # blog = Post.objects.filter(id=id).first()
+        blog = get_object_or_404(Post,id=id)
+        user = User.objects.filter(id=user_id).first()
+        if blog.post_likes.filter(id=user_id).exists():
+            blog.post_likes.remove(user)
+        else:
+            blog.post_likes.add(user)
         blog.save()
         return redirect('home')
 

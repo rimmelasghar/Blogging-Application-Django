@@ -44,15 +44,15 @@
           />
           <div class="media-body">
             <h6 class="my-0 text-white d-block">{{ blog.author.username }}</h6>
-            <small><i class="fa fa-heart" aria-hidden="true"></i>  {{ blog.likes }} likes</small><br>
+            <small><i class="fa fa-heart" aria-hidden="true"></i>  {{ blog.number_of_likes }} likes</small><br>
             <small><i class="fa fa-eye" aria-hidden="true"></i>  {{ blog.views }} views</small>
           </div>
-          
         </div>
         {% if user.is_authenticated %}
-        <form method="post" action="{% url 'like_post' blog.id %}">
+        <form method="post" action="{% url 'like_post' blog.id user.id %}">
           {% csrf_token %}
         <small style="float: right;"><button class="btn btn-primary" style="border:none; background-color:transparent;" type="submit"><i class="fa fa-heart" aria-hidden="true"></i></button></small>
+      
       </form>
       {% endif %}
       </div>
