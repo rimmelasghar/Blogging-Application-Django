@@ -1,0 +1,11 @@
+Django==4.1.7
+django-channels==0.7.0
+django-cors-headers==3.13.0
+django-heroku==0.3.1
+django-on-heroku==1.1.2
+django-rest-framework==0.1.0
+django-restframework==0.0.1
+django-widget-tweaks==1.4.12
+djangorestframework==3.13.1
+djangorestframework-simplejwt==5.2.0
+dnspython==2.2.1
