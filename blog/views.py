@@ -10,6 +10,8 @@ import markdown
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 
+# views for the web Application
+
 def home(request):
     post = Post.objects.all()
     return render(request, 'blogs.html',{"post":post})
@@ -31,6 +33,8 @@ def login_user(request):
 
 
 def register(request):
+    
+    # context = {'name_field': form['username'], 'email_field': form['email']}
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
@@ -41,7 +45,9 @@ def register(request):
             for field, errors in form.errors.items():
                 for error in errors:
                     messages.error(request, f"{field.capitalize()}: {error}")
-    return render(request, 'register.html')
+    else:
+        form = SignUpForm()
+    return render(request, 'register.html',{'form': form})
 
 def logout_view(request):
     logout(request)
@@ -105,3 +111,18 @@ def write_blog(request,user_id):
         tags = Tags(tags=tags,post=blog)
         return redirect('getblog',blog.id)
     return render(request,"writeblog.html")
+
+def comment_like(request,id,user_id):
+    comment = Comment.objects.filter(id =id).first()
+    user = User.objects.filter(id=user_id).first()
+    if comment.comments_likes.filter(id=user_id).exists():
+        comment.comments_likes.remove(user)
+    else:
+        comment.comments_likes.add(user)
+    comment.save()
+    return redirect('getblog',comment.post.id)
+
+# working on this
+def profile_view(request,user_id):
+    user = User.objects.filter(id = user_id).first()
+    

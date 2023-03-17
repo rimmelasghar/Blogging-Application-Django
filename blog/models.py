@@ -28,7 +28,10 @@ class Comment(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField()
     date_posted = models.DateTimeField(auto_now_add=True)
-
+    comments_likes = models.ManyToManyField(User, related_name='comments_like')
+    
+    def get_comment_likes(self):
+        return self.comments_likes.count()
     def __str__(self):
         return f"{self.author.username}'s comment on {self.post.title}"
     
@@ -41,4 +44,7 @@ class Tags(models.Model):
     
 
 class PostImage(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='images/',null=True)
+
+

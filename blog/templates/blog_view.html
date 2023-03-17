@@ -8,6 +8,14 @@
         height: auto; 
         border-radius: 5px;  
     }
+    div.scroll {
+        margin:5px;
+        padding:5px;
+        width: auto;
+        height: 350px;
+        overflow: auto;
+        text-align:justify;
+    }
 </style>
 {% endblock stylesheet %}
 {% block content %}
@@ -47,7 +55,92 @@
                     <p class="fs-5 mb-4">Venus has a runaway greenhouse effect. I kind of want to know what happened there because we're twirling knobs here on Earth without knowing the consequences of it. Mars once had running water. It's bone dry today. Something bad happened there as well.</p> -->
                 </section>
             </article>
+
+
             <!-- Comments section-->
+            {% comment %} <section class="bg-light">
+                <div class="container my-5 py-5 bg-light">
+                  <div class="bg-light row d-flex justify-content-center">
+                    <div class="bg-light col-md-12 col-lg-10 col-xl-8">
+                      <div class="d-flex bg-light justify-content-between align-items-center mb-4">
+                        <h4 class="fw bg-light mb-5">Comments ({{no}})</h4>
+                      </div>
+                      {% if user.is_authenticated %}
+                        <form class="mb-4" method="post" action="{% url 'post_comments' blog.id user.id %}" ><textarea class="form-control" name="comment" rows="3" placeholder="Join the discussion and leave a comment!"></textarea><br>
+                        {% csrf_token %}
+                        
+                        <button class="btn btn-primary">Comment</button>
+                        {% else %}
+                        you have to <a href="/login">login</a> or <a href="/register">Signup</a> to post comments.
+                        <br><br>
+                        {% endif %}
+                        </form>
+                    
+                    <div class="scroll">
+                    {% for i in comments %}
+                    <div class="card mb-3 ">
+                        <div class="card-body">
+                          <div class="d-flex flex-start">
+                            <img class="rounded-circle shadow-1-strong me-3"
+                              src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="avatar" width="40"
+                              height="40" />
+                            <div class="w-100">
+                              <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h6 class="text-primary fw-bold mb-0">
+                                    {{ i.author.username }}
+                                  <span class="text-dark ms-2">{{ i.content }}</span>
+                                </h6>
+                                <p class="text-dark mb-0">{{ i.date_posted }}</p>
+                              </div>
+                              <div class="d-flex justify-content-between align-items-center">
+                                <div class="text-dark d-flex flex-row">
+                                   
+                                    <i class="fa" aria-hidden="true"> {{i.get_comment_likes}}</i>
+                                    <i class="fa fa-heart-o" aria-hidden="true"></i>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      {% endfor %}
+                    </div>
+
+                      {% comment %} <div class="card mb-3">
+                        <div class="card-body">
+                          <div class="d-flex flex-start">
+                            <img class="rounded-circle shadow-1-strong me-3"
+                              src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(26).webp" alt="avatar" width="40"
+                              height="40" />
+                            <div class="w-100">
+                              <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h6 class="text-primary fw-bold mb-0">
+                                  lara_stewart
+                                  <span class="text-dark ms-2">Hmm, This poster looks cool</span>
+                                </h6>
+                                <p class="mb-0">2 days ago</p>
+                              </div>
+                              <div class="d-flex justify-content-between align-items-center">
+                                <p class="small mb-0" style="color: #aaa;">
+                                  <a href="#!" class="link-grey">Remove</a> •
+                                  <a href="#!" class="link-grey">Reply</a> •
+                                  <a href="#!" class="link-grey">Translate</a>
+                                </p>
+                                <div class="d-flex flex-row">
+                                    <i class="fa fa-heart-o" aria-hidden="true"></i>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div> {% endcomment %}
+
+                    {% comment %} </div>
+                  </div>
+                </div>
+              </section>  {% endcomment %}
+
+
             <section class="mb-5">
                 <div class="card bg-light">
                     <div class="card-body">
@@ -64,17 +157,40 @@
                         {% endif %}
                         </form>
                         <!-- Single comment-->
+                        <div class="scroll">
                         {% for i in comments %}
-                        <div class="d-flex">
-                            <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                            <div class="ms-3">
-                                <div class="fw-bold">{{ i.author.username }}</div>
-                                {{ i.content }}
-
+                        <div class="card mb-3 ">
+                            <div class="card-body">
+                              <div class="d-flex flex-start">
+                                <img class="rounded-circle shadow-1-strong me-3"
+                                  src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="avatar" width="40"
+                                  height="40" />
+                                <div class="w-100">
+                                  <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h6 class="text-primary fw-bold mb-0">
+                                        {{ i.author.username }}
+                                      <span class="text-dark ms-2">{{ i.content }}</span>
+                                    </h6>
+                                    <p class="text-dark mb-0">{{ i.date_posted }}</p>
+                                  </div>
+                                  <div class="d-flex justify-content-between align-items-center">
+                                    <div class="text-dark d-flex flex-row">
+                                       
+                                        <i class="fa" aria-hidden="true"> {{i.get_comment_likes}}</i>
+                                        {% if user.is_authenticated %}
+                                        <a href="{% url 'comment_like' i.id user.id %}"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
+                                        {% else %}
+                                        <i class="fa fa-heart-o" aria-hidden="true"></i>
+                                        {% endif %}
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
-                        </div>
+                          </div>
                         <br>
                         {% endfor %}
+                        </div>
                         
                     </div>
                 </div>

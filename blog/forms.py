@@ -5,10 +5,11 @@ from django.core.validators import MinLengthValidator, RegexValidator
 from .models import PostImage
 
 class SignUpForm(UserCreationForm):
-    email = forms.CharField(max_length=254, required=True, widget=forms.EmailInput())
+    username = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    email = forms.CharField(max_length=254, required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
     password1 = forms.CharField(
         label='password1',
-        widget=forms.PasswordInput,
+        widget=forms.PasswordInput(attrs={'class': 'form-control'}),
         validators=[
             MinLengthValidator(8, message='Password must be at least 8 characters'),
             RegexValidator(
@@ -19,7 +20,7 @@ class SignUpForm(UserCreationForm):
     )
     password2 = forms.CharField(
         label='password2',
-        widget=forms.PasswordInput,
+        widget=forms.PasswordInput(attrs={'class': 'form-control'}),
         validators=[
             MinLengthValidator(8, message='Password must be at least 8 characters'),
             RegexValidator(
